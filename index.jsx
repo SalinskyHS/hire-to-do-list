@@ -1,21 +1,33 @@
-name: Deploy to GitHub Pages
-on:
-  push:
-    branches:
-      - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          branch: gh-pages
-          folder: build
-          token: ${{ secrets.GITHUB_TOKEN }}
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
+function App() {
+  const [items, setItems] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  function handleAddItem() {
+    setItems([...items, inputValue]);
+    setInputValue("");
+  }
+
+  return (
+    <div>
+      <h1>ToDo List</h1>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+      <div>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button onClick={handleAddItem}>Add Item</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
